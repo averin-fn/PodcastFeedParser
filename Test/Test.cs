@@ -1,5 +1,6 @@
 using PodcastDataLib;
 using PodcastRssParser;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using Xunit;
@@ -53,10 +54,6 @@ namespace PodcastRssParserTest
                     !string.IsNullOrWhiteSpace(episode.Enclosure.Url),
                     $"{podcast.Title} - {episode.Title}: " +
                     $"Fields (Title, Enclosure.Url) must be not null or white space.");
-
-                Assert.True(episode.Image != null,
-                    $"{podcast.Title} - {episode.Title}: " +
-                    $"Image must be not null");
             }
         }
     }

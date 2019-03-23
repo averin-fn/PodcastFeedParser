@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -10,7 +9,7 @@ namespace PodcastRssParser
 {
     public class RssParser
     {
-        private Dictionary<string, string> Definitions = new Dictionary<string, string>();
+        private Dictionary<string, string> Definitions;
 
         /// <summary>
         /// Parse RSS feed
@@ -22,51 +21,37 @@ namespace PodcastRssParser
             var result = new T();
             if (!string.IsNullOrWhiteSpace(value))
             {
-                try
-                {
-                    XDocument rss = XDocument.Parse(value);
-                    Trace.WriteLine("RSS parse success",
-                        "Info");
-                    GetDefinitions(rss);
-                    ParseElement(rss.Element("rss")
-                        .Element("channel"), ref result);
-                    Trace.WriteLine("Podcast parsing completed",
-                        "Info");
-                }
-                catch(Exception ex)
-                {
-                    Trace.WriteLine(ex.Message,
-                        "Error");
-                    throw ex;
-                }
+                XDocument rss = XDocument.Parse(value);
+                Definitions = GetDefinitions(rss);
+                ParseElement(rss.Element("rss").Element("channel"), ref result);
             }
             return result;
         }
 
         /// <summary>
-        /// Get defenitions from XML document
+        /// Get definitions from XML document
+        /// example: itunes for (itunes:title)
         /// </summary>
-        /// <param name="doc">XML document</param>
-        private void GetDefinitions(XDocument doc)
+        private Dictionary<string, string> GetDefinitions(XDocument doc)
         {
+            var result = new Dictionary<string, string>();
+
             try
             {
                 foreach (var attr in doc.Element("rss").Attributes())
                 {
                     string[] array = attr.Name.ToString().Split('}');
-                    if (array.Length > 1)
+                    if (array.Length == 2)
                     {
-                        Definitions.Add(array.Last(), attr.Value);
+                        result.Add(array[1], attr.Value);
                     }
                 }
-                Trace.WriteLine("Get definitions success",
-                    "Info");
             }
-            catch (Exception ex)
+            catch
             {
-                Trace.WriteLine(ex.Message,
-                    "Error");
+                throw new Exception("Get definition error.");
             }
+            return result;
         }
 
         /// <summary>
@@ -80,21 +65,26 @@ namespace PodcastRssParser
         {
             string[] array = attrName.Split(':');
 
-            if (array.Length > 1)
+            if (array.Length == 2)
             {
-                Definitions.TryGetValue(array.First(), out string value);
-                return  value != null ? 
-                    $"{{{value}}}{array.Last()}"
-                    : null;
+                if(Definitions.TryGetValue(array.First(), out string value))
+                {
+                    return $"{{{value}}}{array[1]}";
+                }
+                return null;
             }
             return attrName;
         }
 
+        /// <summary>
+        /// Parse element of xml
+        /// </summary>
         private void ParseElement<T>(XElement element, ref T result)
         {
             if (element == null) return;
 
             PropertyInfo[] propertyInfos = result.GetType().GetProperties();
+
             foreach (var property in propertyInfos)
             {
                 foreach (var attr in property.CustomAttributes)
@@ -102,6 +92,7 @@ namespace PodcastRssParser
                     if (attr.AttributeType == typeof(RssElementNameAttribute))
                     { 
                         var compareString = ComparableRssAttrName(attr.ConstructorArguments.First().Value.ToString());
+
                         if (compareString != null)
                         {
                             var e = element.Elements(compareString);
@@ -110,64 +101,17 @@ namespace PodcastRssParser
 
                             if (property.PropertyType == typeof(string))
                             {
-                                try
-                                {
-                                    property.SetValue(result, e.FirstOrDefault().Value);
-                                }
-                                catch(Exception ex)
-                                {
-                                    Trace.WriteLine($"\n" +
-                                        $"Property: {property.Name}\n" +
-                                        $"XElement: {e.FirstOrDefault()}" +
-                                        $"Message: {ex.Message}",
-                                        "Error");
-                                }
-                                break;
+                                property.SetValue(result, e.FirstOrDefault().Value); break;
                             }
 
                             if (property.PropertyType.IsGenericType)
                             {
-                                var genericType = property.PropertyType.GenericTypeArguments.First();
-                                var collection = (IList)typeof(List<>).MakeGenericType(genericType).GetConstructor(Type.EmptyTypes).Invoke(null);
-
-                                foreach (var item in e)
-                                {
-                                    var obj = Activator.CreateInstance(genericType);
-                                    ParseElement(item, ref obj);
-                                    collection.Add(obj);
-                                }
-
-                                try
-                                {
-                                    property.SetValue(result, (ICollection)collection);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Trace.WriteLine($"\n" +
-                                        $"Property: {property.Name}\n" +
-                                        $"XElement: {e.FirstOrDefault()}" +
-                                        $"Message: {ex.Message}",
-                                        "Error");
-                                }
+                                property.SetValue(result, SetPropertyGenericType(property, e)); break;
                             }
 
                             if (property.PropertyType.IsClass)
                             {
-                                var obj = Activator.CreateInstance(property.PropertyType);
-                                ParseElement(e.FirstOrDefault(), ref obj);
-                                try
-                                {
-                                    property.SetValue(result, obj);
-                                }
-                                catch(Exception ex)
-                                {
-                                    Trace.WriteLine($"\n" +
-                                        $"Property: {property.Name}\n" +
-                                        $"XElement: {e.FirstOrDefault()}" +
-                                        $"Message: {ex.Message}",
-                                        "Error");
-                                }
-                                break;
+                                property.SetValue(result, SetPropertyClass(property, e)); break;
                             }
                         }
                     }
@@ -176,27 +120,45 @@ namespace PodcastRssParser
                     {
                         var attrValue = attr.ConstructorArguments.First().Value.ToString();
                         var e = element.Attribute(attrValue);
-                        if(e == null) break;
+
+                        if (e == null) break;
                         
                         if (property.PropertyType == typeof(string))
                         {
-                            try
-                            {
-                                property.SetValue(result, e.Value);
-                            }
-                            catch (Exception ex)
-                            {
-                                Trace.WriteLine($"\n" +
-                                    $"Property: {property.Name}\n" +
-                                    $"XElement: {e}" +
-                                    $"Message: {ex.Message}", 
-                                    "Error");
-                            }
-                            break;
+                            property.SetValue(result, e.Value); break;
                         }
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Create collection objects to generic types
+        /// </summary>
+        private IList SetPropertyGenericType(PropertyInfo property, IEnumerable<XElement> e)
+        {
+            var genericType = property.PropertyType.GenericTypeArguments.First();
+            var collection = (IList)typeof(List<>).MakeGenericType(genericType).GetConstructor(Type.EmptyTypes).Invoke(null);
+
+            foreach (var item in e)
+            {
+                var obj = Activator.CreateInstance(genericType);
+                ParseElement(item, ref obj);
+                collection.Add(obj);
+            }
+
+            return collection;
+        }
+
+
+        /// <summary>
+        /// Create specific class object
+        /// </summary>
+        private object SetPropertyClass(PropertyInfo property, IEnumerable<XElement> e)
+        {
+            var obj = Activator.CreateInstance(property.PropertyType);
+            ParseElement(e.FirstOrDefault(), ref obj);
+            return obj;
         }
     }
 }

@@ -32,8 +32,7 @@ namespace RssParserPortable
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"{ex.Message}",
-                    "Error");
+                Trace.WriteLine($"{ex.Message}", "Error");
             }
 
             if (!string.IsNullOrWhiteSpace(feed))
