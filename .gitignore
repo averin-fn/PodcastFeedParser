@@ -18,19 +18,7 @@
 *.userprefs
 
 # My specific files
-AppPackages/
-Assets/
-bin/
-BundleArtifacts/
-obj/
-Properties/
-*.sln
-*.csproj
-*.appxmanifest
-*.pfx
-*.user
-Package.StoreAssociation.xml
-_pkginfo.txt
+
 
 
 # Build results
