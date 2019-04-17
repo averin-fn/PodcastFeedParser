@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PodcastDataLib\PodcastDataLib.csproj" />
-    <ProjectReference Include="..\RssParser\PodcastRssParser.csproj" />
+    <ProjectReference Include="..\PodcastRssParserSample\PodcastRssParserSample.csproj" />
   </ItemGroup>
 
 </Project>

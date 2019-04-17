@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PodcastDataLib\PodcastDataLib.csproj" />
-    <ProjectReference Include="..\RssParser\PodcastRssParser.csproj" />
+    <ProjectReference Include="..\RssParser\RssParserLib.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
-﻿using PodcastRssParser;
+﻿using RssParserLib;
 
-namespace PodcastDataLib
+namespace RssParserSample.Data
 {
     public class Image
     {

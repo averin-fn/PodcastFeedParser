@@ -1,11 +1,11 @@
-﻿using PodcastDataLib;
-using System;
-using PodcastRssParser;
+﻿using System;
+using RssParserLib;
 using System.Diagnostics;
 using System.Net;
 using System.IO;
+using RssParserSample.Data;
 
-namespace RssParserPortable
+namespace RssParserSample
 {
     class Program
     {

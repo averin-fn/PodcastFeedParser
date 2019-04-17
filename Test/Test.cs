@@ -1,6 +1,5 @@
-using PodcastDataLib;
-using PodcastRssParser;
-using System.Collections.Generic;
+using RssParserLib;
+using RssParserSample.Data;
 using System.IO;
 using System.Net;
 using Xunit;

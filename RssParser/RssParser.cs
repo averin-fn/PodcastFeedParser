@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace PodcastRssParser
+namespace RssParserLib
 {
     public class RssParser
     {

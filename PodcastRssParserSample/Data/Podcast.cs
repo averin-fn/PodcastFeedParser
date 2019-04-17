@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PodcastRssParser;
+﻿using System.Collections.Generic;
+using RssParserLib;
 
-namespace PodcastDataLib
+namespace RssParserSample.Data
 {
     public class Podcast
     {

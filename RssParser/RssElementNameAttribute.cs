@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace PodcastRssParser
+namespace RssParserLib
 {
     public class RssElementNameAttribute : Attribute
     {

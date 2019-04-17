@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PodcastRssParserPortable", "RssParserPortable\PodcastRssParserPortable.csproj", "{26C33CBB-54F9-477D-9173-326FE38FC2A5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PodcastRssParser", "RssParser\PodcastRssParser.csproj", "{C90DF819-6E23-49B2-8AFC-E1EE5B4C6967}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssParserLib", "RssParser\RssParserLib.csproj", "{C90DF819-6E23-49B2-8AFC-E1EE5B4C6967}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PodcastRssParserTest", "Test\PodcastRssParserTest.csproj", "{23D17240-3385-41C5-AD84-B6D7FACC718F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PodcastDataLib", "PodcastDataLib\PodcastDataLib.csproj", "{599F453C-CC66-4AA8-B02D-4A11DBDE0C44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PodcastRssParserSample", "PodcastRssParserSample\PodcastRssParserSample.csproj", "{6EA2713A-2D6D-433D-A082-F27C3079E329}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{26C33CBB-54F9-477D-9173-326FE38FC2A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26C33CBB-54F9-477D-9173-326FE38FC2A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26C33CBB-54F9-477D-9173-326FE38FC2A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26C33CBB-54F9-477D-9173-326FE38FC2A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C90DF819-6E23-49B2-8AFC-E1EE5B4C6967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C90DF819-6E23-49B2-8AFC-E1EE5B4C6967}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C90DF819-6E23-49B2-8AFC-E1EE5B4C6967}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,10 +23,10 @@ Global
 		{23D17240-3385-41C5-AD84-B6D7FACC718F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23D17240-3385-41C5-AD84-B6D7FACC718F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23D17240-3385-41C5-AD84-B6D7FACC718F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{599F453C-CC66-4AA8-B02D-4A11DBDE0C44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{599F453C-CC66-4AA8-B02D-4A11DBDE0C44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{599F453C-CC66-4AA8-B02D-4A11DBDE0C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{599F453C-CC66-4AA8-B02D-4A11DBDE0C44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EA2713A-2D6D-433D-A082-F27C3079E329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EA2713A-2D6D-433D-A082-F27C3079E329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EA2713A-2D6D-433D-A082-F27C3079E329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EA2713A-2D6D-433D-A082-F27C3079E329}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
